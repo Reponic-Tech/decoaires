@@ -1,0 +1,7 @@
+{
+  "name": "decoaires",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}

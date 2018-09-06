@@ -1,0 +1,63 @@
+<ion-header>
+
+	<ion-toolbar>
+		<ion-buttons start>
+			<button ion-button icon-only (click)="productEditForm = !productEditForm">
+				<ion-icon name="create" *ngIf="!productEditForm"></ion-icon>
+				<ion-icon name="close" *ngIf="productEditForm"></ion-icon>
+			</button>
+		</ion-buttons>
+		<ion-navbar>
+			<ion-title>Product detail</ion-title>
+		</ion-navbar>
+		<ion-buttons end>
+			<button ion-button icon-only (click)="deleteProduct()">
+				<ion-icon name="trash"></ion-icon>
+			</button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+	<ion-card>
+		<img src="assets/imgs/home/contact.jpg" />
+		<ion-card-content *ngIf="!productEditForm; else EDIT">
+			<ion-card-title>
+				{{productDetail.name}}
+			</ion-card-title>
+			<p>
+				{{productDetail.description}}
+			</p>
+			<p>
+				{{productDetail.cloth_type}}
+			</p>
+			<p>
+				{{productDetail.size}}
+			</p>
+		</ion-card-content>
+		<ng-template #EDIT>
+			<form (ngSubmit)="submitProduct()">
+				<ion-card-content>
+					<ion-card-title>
+						<!-- <ion-label floating>Name</ion-label> -->
+						<ion-input type="text" [(ngModel)]="productDetail.name" name="name" placeholder="Name"></ion-input>
+					</ion-card-title>
+					<p>
+						<!-- <ion-label floating>Description</ion-label> -->
+						<ion-textarea [(ngModel)]="productDetail.description" name="description" placeholder="Description"></ion-textarea>
+					</p>
+					<p>
+						<!-- <ion-label floating>Colth Type</ion-label> -->
+						<ion-textarea [(ngModel)]="productDetail.cloth_type" name="cloth_type" placeholder="Cloth type"></ion-textarea>
+					</p>
+					<p>
+						<!-- <ion-label floating>Size</ion-label> -->
+						<ion-textarea [(ngModel)]="productDetail.size" name="size" placeholder="size"></ion-textarea>
+					</p>
+					<button ion-button type="submit" block>Edit</button>
+				</ion-card-content>
+			</form>
+		</ng-template>
+	</ion-card>
+</ion-content>
