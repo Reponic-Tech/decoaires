@@ -1,4 +1,5 @@
 export const URL = {
-	// url: 'http://192.168.1.107:8000/',
-	url: 'http://andresreponic.pythonanywhere.com/'
+	url: 'http://192.168.1.107:8000/',
+	// url: 'http://andresreponic.pythonanywhere.com/',
+	auth0_url: 'https://decoaries-mobileapp.auth0.com'
 };

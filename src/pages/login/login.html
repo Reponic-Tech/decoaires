@@ -1,21 +1,37 @@
 <ion-content padding>
 
-	<ion-list>
-		<!--<ion-item>
-			<ion-label fixed>Username</ion-label>
-			<ion-input type="text" value=""></ion-input>
+	<ion-list *ngIf="!signInForm; else SIGNIN">
+		<ion-item>
+			<ion-label fixed>Email</ion-label>
+			<ion-input [(ngModel)]="logInData.username" name="username" type="email"></ion-input>
 		</ion-item>
 
 		<ion-item>
 			<ion-label fixed>Password</ion-label>
-			<ion-input type="password"></ion-input>
-		</ion-item> -->
-		<!-- <ion-item> -->
-		<button ion-button full (click)="login()">Login</button>
-		<!-- </ion-item> -->
-		<ion-item>
-			<button ion-button clear>Registrarse</button>
+			<ion-input [(ngModel)]="logInData.password" name="password" type="password"></ion-input>
 		</ion-item>
+		<button ion-button full (click)="loginAuth0()">Login</button>
+		<button ion-button clear (click)="signInForm = !signInForm">I'm not registered</button>
 	</ion-list>
 
+	<ng-template #SIGNIN>
+		<form (ngSubmit)="signIn()">
+			<ion-list>
+				<ion-item>
+					<ion-label fixed>Email</ion-label>
+					<ion-input [(ngModel)]="signInData.email" name="email" type="email"></ion-input>
+				</ion-item>
+
+				<ion-item>
+					<ion-label fixed>Password</ion-label>
+					<ion-input [(ngModel)]="signInData.password" name="password" type="password"></ion-input>
+				</ion-item>
+				<ion-item>
+					<ion-label fixed>Repeat password</ion-label>
+					<ion-input [(ngModel)]="repeat_password" name="repeat_password" type="password"></ion-input>
+				</ion-item>
+				<button ion-button clear type="submit">Sign In</button>
+			</ion-list>
+		</form>
+	</ng-template>
 </ion-content>

@@ -10,6 +10,7 @@ export class ProductServiceProvider {
 	constructor(public http: HTTP) {
 
 		this.root = URL.url;
+
 	}
 
 	getProducts() {

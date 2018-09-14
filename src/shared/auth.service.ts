@@ -1,68 +1,99 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Storage } from '@ionic/storage';
-import { AUTH_CONFIG } from './auth.config';
-import Auth0Cordova from '@auth0/cordova';
-import * as auth0 from 'auth0-js';
+// import { Storage } from '@ionic/storage';
+import { HTTP } from '@ionic-native/http';
+import { URL } from '../shared/root-url';
 
 @Injectable()
 export class AuthService {
-	Auth0 = new auth0.WebAuth(AUTH_CONFIG);
-	Client = new Auth0Cordova(AUTH_CONFIG);
+	
 	accessToken: string;
 	user: any;
 	loggedIn: boolean;
 	loading = true;
+	root: string;
+	aut0_url: string;
+	
+	
 
 	constructor(
 		public zone: NgZone,
-		private storage: Storage
+		// private storage: Storage,
+		public http: HTTP
 	) {
-		this.storage.get('profile').then(user => this.user = user);
-		this.storage.get('access_token').then(token => this.accessToken = token);
-		this.storage.get('expires_at').then(exp => {
-			this.loggedIn = Date.now() < JSON.parse(exp);
-			this.loading = false;
-		});
+		this.root = URL.url;
+		this.aut0_url = URL.auth0_url;
 	}
 
-	login() {
-		this.loading = true;
-		const options = {
-			scope: 'openid profile offline_access'
-		};
-		// Authorize login request with Auth0: open login page and get auth results
-		this.Client.authorize(options, (err, authResult) => {
-			if (err) {
-				throw err;
-			}
+	signIn(signInData) {
 
-			// Set Access Token
-			this.storage.set('access_token', authResult.accessToken);
-			this.accessToken = authResult.accessToken;
-			// Set Access Token expiration
-			const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
-			this.storage.set('expires_at', expiresAt);
-			// Set logged in
-			this.loading = false;
-			this.loggedIn = true;
-			// Fetch user's profile info
-			this.Auth0.client.userInfo(this.accessToken, (err, profile) => {
-				if (err) {
-					throw err;
-				}
-				this.storage.set('profile', profile).then(val =>
-					this.zone.run(() => this.user = profile)
-				);
-			});
-		});
+		console.log('Auth service')
+		console.log(JSON.stringify(signInData))
+
+		let url = this.aut0_url + '/dbconnections/signup'
+
+		signInData.client_id = "0Fj5vS8La1Y5ei2V3bAu2zZnaT6pxAN4"
+		signInData.connection = "Username-Password-Authentication"
+		// signInData.user_metadata = { plan: 'silver', team_id: 'a111' }		
+
+		console.log(JSON.stringify(signInData))
+
+		return this.http.post(url, signInData, {}).then(data => {
+
+			console.log('sign in successfull');
+			console.log(data);
+			return data;
+		}).catch(error => {
+
+			console.error(error);
+			return error;
+
+		})
 	}
 
-	logout() {
-		this.storage.remove('profile');
-		this.storage.remove('access_token');
-		this.storage.remove('expires_at');
-		this.accessToken = null;
-		this.user = null;
-		this.loggedIn = false;
+	logIn(logInData) {
+
+		console.log('Auth service')
+		console.log(JSON.stringify(logInData))
+
+		let url = this.aut0_url + '/oauth/token'
+
+		logInData.client_id = "0Fj5vS8La1Y5ei2V3bAu2zZnaT6pxAN4"
+		logInData.grant_type = 'password'
+		logInData.scope = 'openid'
+
+		return this.http.post(url, logInData, {}).then(data => {
+
+			console.log('log in successfull');
+			// console.log(data);
+			return data;
+
+		}).catch(error => {
+			
+			console.error(error);
+			return error;
+
+		})
+
 	}
+
+	getUserByAccess(accessToken){
+
+		let url = this.aut0_url + '/userinfo';
+		let header = { Authorization: 'Bearer '+ accessToken }
+
+		return this.http.get(url,{}, header).then(data => {
+
+			console.log('User info');
+			// console.log(data);
+			return data;
+
+		}).catch(error => {
+
+			console.error(error);
+			return error;
+
+		})
+
+	}
+
 }
