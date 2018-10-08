@@ -83,4 +83,22 @@ export class ProductServiceProvider {
 		})
 	}
 
+	requestBudget(product, userEmail){
+
+		let body = {
+			email : userEmail,
+			productDetail : product
+		}
+		let url = this.root + 'sendBudget/'
+		return this.http.post(url, body, {}).then(data => {
+
+			if (data.status == 200) {
+				return data.data;
+			} else {
+				return { error: "status:" + data.status };
+			}
+
+		})
+
+	}
 }

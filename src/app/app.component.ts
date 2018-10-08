@@ -4,13 +4,15 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { LoginPage } from '../pages/login/login';
 import Auth0Cordova from '@auth0/cordova';
+import { ProductDetailPage } from '../pages/product-detail/product-detail';
+import { AdminPage } from '../pages/admin/admin';
 
 
 @Component({
 	templateUrl: 'app.html'
 })
 export class MyApp {
-	//   rootPage:any = ProductDetailPage;
+		// rootPage:any = AdminPage;
 	rootPage: any = LoginPage;
 
 	constructor(

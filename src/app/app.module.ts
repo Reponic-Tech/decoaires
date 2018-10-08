@@ -18,6 +18,9 @@ import { IonicStorageModule } from '@ionic/storage';
 import { HTTP } from '@ionic-native/http';
 import { ProductServiceProvider } from '../providers/product-service/product-service';
 import { CreateProductModalPage } from '../pages/modals/create-product-modal/create-product-modal';
+import { AdminPage } from '../pages/admin/admin';
+import { UserServiceProvider } from '../providers/user-service/user-service';
+import { NativeStorage } from '@ionic-native/native-storage';
 
 @NgModule({
 	declarations: [
@@ -28,7 +31,8 @@ import { CreateProductModalPage } from '../pages/modals/create-product-modal/cre
 		LoginPage,
 		ProductPage,
 		ProductDetailPage,
-		CreateProductModalPage
+		CreateProductModalPage,
+		AdminPage
 	],
 	imports: [
 		BrowserModule,
@@ -44,15 +48,18 @@ import { CreateProductModalPage } from '../pages/modals/create-product-modal/cre
 		LoginPage,
 		ProductPage,
 		ProductDetailPage,
-		CreateProductModalPage
+		CreateProductModalPage,
+		AdminPage
 	],
 	providers: [
 		StatusBar,
 		SplashScreen,
 		AuthService,
 		HTTP,
+		NativeStorage,
 		{ provide: ErrorHandler, useClass: IonicErrorHandler },
-		ProductServiceProvider
+		ProductServiceProvider,
+		UserServiceProvider,
 	]
 })
 export class AppModule { }

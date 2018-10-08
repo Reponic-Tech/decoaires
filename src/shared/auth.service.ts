@@ -58,8 +58,8 @@ export class AuthService {
 		let url = this.aut0_url + '/oauth/token'
 
 		logInData.client_id = "0Fj5vS8La1Y5ei2V3bAu2zZnaT6pxAN4"
-		logInData.grant_type = 'password'
-		logInData.scope = 'openid'
+		logInData.grant_type = 'password'		
+		logInData.client_secret = 'pSOnlqewM8iWzRRZ5THDF0-X3Ik_0MTJUiD6xDey8FLdezStsDtUsltgJPgecPD_'
 
 		return this.http.post(url, logInData, {}).then(data => {
 

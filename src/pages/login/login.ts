@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { TabsPage } from '../tabs/tabs';
 import { AuthService } from '../../shared/auth.service';
+import { NativeStorage } from '@ionic-native/native-storage';
 
 @Component({
 	selector: 'page-login',
@@ -12,18 +13,19 @@ export class LoginPage {
 	public signInForm: boolean = false;
 	public signInData: any = {};
 	public repeat_password: any;
-	public logInData: any = {'username' : 'test@gmail.com', 'password' : 'A12345678.' };
+	// public logInData: any = { 'username': 'decoairesbe@yopmail.com', 'password': 'D12345678.' };
+	public logInData: any = { 'username': '', 'password': '' };
 
 	constructor(
 		public navCtrl: NavController,
 		public navParams: NavParams,
 		public _auth: AuthService,
-		private toastCtrl: ToastController) {
-	}
+		private toastCtrl: ToastController,
+		private storage: NativeStorage) {
 
-	ionViewDidLoad() { 
-		this.presentToast('hola');
-	}
+		} 	
+
+	ionViewDidLoad() { }
 
 	presentToast(message) {
 		let toast = this.toastCtrl.create({
@@ -48,15 +50,19 @@ export class LoginPage {
 				if (!result.error) {
 					console.log(result)
 					let userTokens = JSON.parse(result.data)
-					this._auth.getUserByAccess(userTokens.access_token).then((data : any) => {
-							
+					this._auth.getUserByAccess(userTokens.access_token).then((data: any) => {
+
 						let userId = (JSON.parse(data.data).sub).split("|")[1]
 						console.log(userId)
-						this.navCtrl.push(TabsPage)					
 
-					} )
+						this.storage.setItem('userInfo', { userEmail: this.logInData.username }).then(
+							() => this.navCtrl.push(TabsPage),
+							error => console.error('Error storing item', error)
+						);					
+
+					})
 				}
-				else {					
+				else {
 					this.presentToast(JSON.parse(result.error).error_description)
 				}
 			}
@@ -74,8 +80,8 @@ export class LoginPage {
 					if (!result.error) {
 						console.log(result)
 					}
-					else{
-						console.log(JSON.parse(result.error).message)						
+					else {
+						console.log(JSON.parse(result.error).message)
 						this.presentToast(JSON.parse(result.error).message)
 					}
 				}

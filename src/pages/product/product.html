@@ -20,9 +20,11 @@
 
 <ion-content>
 	<ion-grid>
-		<ion-col *ngFor="let product of productList" (click)="goToDetail(product.id)">
-			<img src="assets/imgs/home/117x117.png" />
-		</ion-col>
+		<ion-row>
+			<ion-col>
+				<img col-4 src="assets/imgs/home/117x117.png" *ngFor="let product of productList" (click)="goToDetail(product.id)"/>
+			</ion-col>
+		</ion-row>
 	</ion-grid>
 
 </ion-content>

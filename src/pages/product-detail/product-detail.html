@@ -35,7 +35,7 @@
 			<p>
 				{{productDetail.size}}
 			</p>
-		</ion-card-content>
+		</ion-card-content>		
 		<ng-template #EDIT>
 			<form (ngSubmit)="submitProduct()">
 				<ion-card-content>
@@ -60,4 +60,5 @@
 			</form>
 		</ng-template>
 	</ion-card>
+	<button ion-button block (click)="requestBudget(productDetail)">Request budget</button>
 </ion-content>
